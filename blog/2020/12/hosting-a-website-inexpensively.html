@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/assets/css/main.css">
+
+    <title>Hosting Websites Inexpensively</title>
+
+
+    <meta name="description" content="This post is about my current approach to hosting websites, mainly in the Microsoft Cloud."/>
+
+
+    </head>
+
+    <body>
+        <div class="container">
+            
+                        
+<header>
+    <p class="head-title"><a href="/">Retired... Not Out</a></p>
+</header>
+
+            
+<nav>
+    <a class="nav-hdr  " href="/">Home</a>
+    <a class="nav-hdr  " href="/blog/">Blog</a>
+    <a class="nav-hdr  " href="/about">About</a>
+    <a class="nav-hdr  " href="/contact">Contact</a>
+</nav>
+
+
+            <section>
+                <div>
+                    <p class="bd-left">
+                        Paul Chappell
+                    </p>
+                    <p class="bd-right">
+                        Tuesday 29 December 2020
+                    </p>
+                </div>
+
+                <div class="bd-reset">
+                    <h1>Hosting Websites Inexpensively</h1>
+<p>One of the cheapest ways to host a website is shared hosting. This can be very inexpensive, as little as one pound per month. However, problems with this method include performance and security because you would be sharing a server with hundreds, probably thousands of other websites. Given my huge concerns about the security aspects of this approach it’s not the route I would choose and, therefore, I won’t be talking about this method in this blog.</p>
+<p>The rest of this post outlines the approach I’ll be taking.</p>
+<h2>Static Websites</h2>
+<p>For static websites, <a href="https://guides.github.com/features/pages/">GitHub Pages</a> offer free hosting, you can even use your own domain name.</p>
+<p><a href="https://github.com/">GitHub</a> is owned by Microsoft and is open-source version-control software. It’s been the default source control system for Visual Studio 2019, since release 16.8. Microsoft uses it for the various projects of the <a href="https://dotnetfoundation.org/projects">.Net Foundation</a>. It’s used extensively by the Open-Source community. It can be used for version control of your website. It’s also pretty secure, as you would expect with a Microsoft product.</p>
+<p>GitHub can be used with Visual Studio Code (and other editors such as Atom), for version control. I use Visual Studio Code to write this blog. I’ve also used GitHub pages to host the initial version of this blog. I’ll be writing more about using GitHub in future posts.</p>
+<h2>Dynamic Websites</h2>
+<p>GitHub pages are free but not very useful for dynamic and data-driven websites. For these you need some form of web server, and that costs money.</p>
+<p>As part of my website generator project, I’m also developing a web server, to deliver a website’s static and dynamic content. In order to be usable, it needs to be hosted somewhere, usually a virtual machine (VM).</p>
+<p>Because I am interested in minimal cost, I’m only interested in the very smallest of the VMs. I’m also administrating them myself, if you cannot do this yourself, then costs will rise.</p>
+<h2>Burstable Virtual Machines</h2>
+<p>When I wrote the <a href="https://www.ulverstonfallen.uk/home">Ulverston Fallen</a> website, there was a big issue with hosting, essentially, there was no budget for it.</p>
+<p>Because I am quite capable of administrating a virtual machine, I decided to rent a very small one in the Microsoft Azure Cloud. It’s very small and costs around £11.00 a month, which I split 50/50 with my cousin. I have two, not so busy websites and she one, busier one. It costs each of us less than the cost a half decent bottle of wine or a couple of coffees at Starbucks, a month. The websites use Cloud Flare as a CDN, and it all works well. The bigger website, <a href="https://www.ulverstonfallen.uk/home">Ulverston Fallen</a>, is very, very fast.</p>
+<p>It’s an <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-b-series-burstable">Azure, B1S Virtual Machine</a>. It’s very small, just one core and one gig of memory, and it’s a burstable VM. Which means it has a baseline performance of 10% of the Virtual CPU (vCPU) per minute. On average you only get 10% of the vCPU, no more. If you use 10% or less on average, then no problem. If you need to use more than 10%, not good, processing slows down as your VM is under powered.</p>
+<p>Purchasing the VM gives you 0.1 credits per minute, which can be used or banked. When running at less than 10%, credits are banked. When running at more than 10%, banked credits are used while they are available. For example:</p>
+<ul>
+<li><p>If the vCPU is not used between midnight and six, it banks 0.1 credits per minute, which gives 36 at six in the morning (6 hours x 60 minutes x 0.1 credits per minute).</p>
+</li>
+<li><p>If the vCPU then has to run at 50% for five minutes, it needs 0.5 credits per minute. The baseline is 0.1, so it needs an additional 0.4 credits per minute from the bank. That’s 2 credits, leaving us with 34 at the end of five minutes.</p>
+</li>
+</ul>
+<p>-If the vCPU then has to run at 20% until midnight, it needs an additional 0.1 credits from the bank, per minute. Unfortunately, the bank only contains 34, which allows 340 minutes at 20%, once used the vCPU will only run at 10%, so the VM is then under-powered. At the end of the day, the bank is empty.</p>
+<ul>
+<li>If the vCPU only needs to run at 10% until midnight, at the end of the day there will still be 34 credits in the bank. By six the next morning the number of credits in the bank will increase to 70.</li>
+</ul>
+<p>At 6:05 in the morning there are 34 credits in the bank and 1,075 minutes until midnight. Dividing the number of credits by the number of minutes, we get 0.031 credits per minute. So, as long as the vCPU averages 13.1% during this period, without the balance dropping below zero credits, all is OK.</p>
+<p>For a B1S VM, the maximum number of credits you can bank is 144. When the VM is created, you get an initial allowance of 30 credits.</p>
+<p>Our B1S is easily powerful enough for our websites, most of the time there are 144 credits in the bank. This is because I use Cloud Flare as a content delivery network (CDN), keeping load of the VM. There’s also a lot of caching going on, on the server, on the browser and on Cloud Flare.</p>
+<p>But what if it’s not enough?</p>
+<h2>Use a Bigger Machine</h2>
+<p>You can go to a B1MS VM, which has 1 vCPU and 2 GB of memory, with a baseline performance of 20%, or 0.2 credits per minute. It has twice the vCPU capacity as the B1S VM and costs twice the price. There is a range of VMs available, it’s just a case of picking the one that is most suitable for your workload.</p>
+<p>The Azure pricing page for VMs is here. Azure allows you to pay for these VMs up front. If you pay for a year in advance the saving is around 40%, three years’ saves around 60%. Paying upfront can reduce costs considerably.</p>
+<h2>Use Two or More Machines Behind a Load Balancer</h2>
+<p>The basic Azure load balancer is free and allows you to balance requests to your website between two or more VMs. Two B1S VMs cost more or less the same as a VM that’s twice the size, a B1MS.</p>
+<p>An advantage of this approach is that if one of the VMs becomes unusable (say it’s crashed or you’re patching its operating system), you still have one VM to process requests. It might run slowly, but at least you still have one, until you manage to get the other one up and running.</p>
+<p>Another advantage is that you can vary the number of VMs you have behind the load balancer. This can be done automatically; you simply tell it the number of VMs it has at its disposal (it needs to be enough to cover the highest workload). The load balancer will monitor the workload, and start and stop them as required, in order to keep the load constant. You can also do this yourself, manually.</p>
+<p>A good example of changing the number of VMs, is if you were to go on the radio to talk about your website. If you did this, you would suddenly get a lot of people viewing your site, far more than normal. The usual number of VMs would probably be inadequate for the sudden increase in workload, and the site would slow down, possibly even crash. Not what you want when talking on air about it. By adding more VMs, just before your broadcast, you’ll have enough to cover the increased workload. The additional VMs can be removed once the peak subsides.</p>
+<p>The important point is that you only pay for the minutes you use. A B1S VM costs around £11 per month, or around £0.025 per minute, less than two pence an hour.</p>
+<p>In order to run your website, you may find that you need four B1S virtual servers. In this case you might decide to use two B1MS VMs instead. The cost is similar, and you still have more than one VM.</p>
+<p>With Azure, it’s not the size of the VM that matters, it’s the number of them!</p>
+<p>I’ll be returning to this in more detail in a later post. If you want to guarantee 100% availability of your website and consistent performance, then two or more VMs behind a load balancer is the way to go.</p>
+<h2>But a B1S is Very, Very Small</h2>
+<p>Yes, it is, because of this you need make sure that the software used to run a website is very efficient in its use of vCPU and memory. I’m going to be writing my own web server, so this is under my control. I’ll be writing about how I do this in my blog. In fact, it’s one of the main points of this blog.</p>
+<p>With this size of machine, there is no way you can have a database on it, the database needs to be on another server. I am going to be looking at using <a href="https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction">Azure Storage</a> to store my data. It’s very inexpensive; in fact, for small websites it’s effectively free. It’s also durable and highly available, redundancy ensures that data is safe in the event of a hardware failure. The data can even be replicated to other data centres.</p>
+<p>No important data (even the logs) will be stored on my web servers. If the server crashes, nothing will be lost.</p>
+<h2>Azure Functions</h2>
+<p><a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview">Azure functions</a> are stateless blocks of code which execute automatically in response to some trigger, such as a file being uploaded to Azure Storage, or a request being added to an Azure Storage Queue. I’ll be using them to remove processing that would occur on the web server, thereby reducing its load.</p>
+<p>Consider the processing behind the contact form of a website. One approach is to send an email to the site administrator informing them of the contact. With this approach, the email needs to be formatted on the web server.</p>
+<p>Another approach is to put the contact request into an Azure Storage Queue that is monitored by an Azure Function. Whenever the function detects a request, it sends the email to the administrator. The processing on the web server is now minimised, all it needs to do is write the contact request to the queue. The sending of the email occurs in the Azure Function.</p>
+<p>These functions are very, very inexpensive. The cost is based on the number of executions that occur each month, and the per-second resource consumption. For total executions, it costs £0.15 per million executions per month, with the first million executions free (that’s just over 22 executions per minute).</p>
+<p>Resource consumption is based on gigabyte seconds (GB-s). Which is calculated by multiplying the memory used by the function multiplied by the time it executes, rounded to the nearest millisecond. The minimum execution time is 100ms, and the minimum memory use 128MB. Every month there is a free grant of 400,000 GB-s. After that, the cost is £0.000012 per GB-s!</p>
+<p>As you can see, these are incredibly inexpensive, and, as I’ve said, for a small website, they are effectively free.</p>
+<p>Say you have 100 contact emails a month, and the function that processes each one needs 128MB of memory and takes 200 milliseconds to execute. The total resource consumption is 128 times 0.2 seconds, which is 25.6 GB-s. That’s free.</p>
+<p>I’ll be using them extensively in my web server design.</p>
+
+
+                    <div class="actualPostInfo">
+                        <p>Tuesday 29 December 2020</p>
+                        <p>Paul Chappell</p>
+                    </div>
+                </div>
+            </section>
+            
+            
+<footer>
+    <p class="fm-left">
+        Copyright © 2021 Paul Chappell. All Rights Reserved
+    </p>
+    <p class="fm-right">
+        Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
+    </p>
+    <div class="nav-foot">
+        <a class="nav-ftr nav-ftr-hom" href="/">Home</a>
+        <a class="nav-ftr nav-ftr-abt" href="/blog/">Blog</a>
+        <a class="nav-ftr nav-ftr-abt" href="/about">About</a>
+        <a class="nav-ftr nav-ftr-cnt" href="/contact">Contact</a>
+        <a class="nav-ftr nav-ftr-inf" href="/info">Info</a>
+    </div>
+</footer>
+
+
+        </div>
+    </body>
+</html>

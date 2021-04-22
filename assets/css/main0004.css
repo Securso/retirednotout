@@ -1,0 +1,250 @@
+:root {
+    font-size: 0.8em;
+    box-sizing: border-box;
+}
+
+@media (min-width: 576px) {
+    :root {
+        font-size: 0.9em;
+    }
+}
+@media (min-width: 768px) {
+    :root {
+        font-size: 1.0em;
+    }
+}
+@media (min-width: 992px) {
+    :root {
+        font-size: 1.1em;
+    }
+}
+
+*, ::before, ::after {
+    box-sizing: inherit;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+body {
+    max-width: 800px;
+    margin: 0 auto 0 auto;
+    color: rgb(90, 90, 90);
+    background-color: rgb(250, 250, 250);
+    font-family: Calibri, Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+/* Lobotomised Owl */
+body * + * {
+    margin-top: 1.25em;
+}
+
+h1 {
+    font-size: 1.3rem;
+}
+h2 {
+    font-size: 1.2rem;
+}
+h3 {
+    font-size: 1.1rem;
+}
+p {
+    font-size: 1.0rem;
+}
+
+a:link {
+    color: green;
+    text-decoration: none;
+}
+a:visited {
+    color:  green;
+    text-decoration: none;
+}
+a:hover {
+    color: green;
+    text-decoration: underline;
+    font-weight: bold;
+}
+a:active {
+    color:  green;
+    text-decoration: none;
+}
+
+/* ----------------------------------- */
+/* ----------------------------------- */
+/* ----------------------------------- */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ----------------------------------- */
+
+
+.container > header {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 0.5em;
+} 
+
+.container > header .head-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0.25em 0.50em;
+}
+
+/* ----------------------------------- */
+
+.container > nav {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 0.5em;
+    border-bottom: 1px solid rgb(150, 150, 150);
+    padding-bottom: 0.75em;
+    display: flex;
+    justify-content: center;
+}
+
+.container > nav .nav-hdr {
+    flex: 0 0 auto;  
+    font-size: 1.1em;
+    margin-top: 0;
+    padding: 0.25em 0.25em;
+    line-height: 1;
+}
+
+.container > nav .nav-hdr-cur {
+    font-weight: bold;
+}
+
+/* ----------------------------------- */
+
+.container > footer {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 3em;
+    border-top: 1px solid rgb(150, 150, 150);
+}
+
+.container > footer p {
+    font-size: 0.8rem;
+    margin-top: 0;
+    padding: 0.25em 0.75em;
+}
+
+.container > footer .fm-left {
+    float: left;
+    text-align: left;
+}
+.container > footer .fm-right {
+    float: right;
+    text-align: right;
+}
+
+@media (max-width: 576px) {
+
+    .container > footer .fm-left {
+        float: none;
+        text-align: center;
+    }
+    .container > footer .fm-right{
+        float: none;
+        text-align: center;
+        padding-top: 0;
+    }
+}
+
+.container > footer .nav-foot {
+    display: flex;
+    justify-content: center;
+    clear: both;
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.container > footer .nav-ftr {
+    flex: 0 0 auto; 
+    font-size: 1rem;
+    margin-top: 0;
+    padding: 0 0.25em;
+}
+
+@media (max-width: 576px) {
+    .container > footer .nav-foot {
+        margin: 0.25em 0 1.5em 0;
+    }
+
+}
+
+/* ----------------------------------- */
+
+.container > section  {
+    flex: 1 0 auto;
+    margin: 0.25em 0.5em 0 0.5em;
+}
+
+.container > section ul {
+    list-style: disc; 
+    padding-left: 1.5em;
+}
+.container > section ol {
+    list-style: decimal; 
+    padding-left: 1.5em;
+}
+.container > section li {
+    font-size: 0.9rem;
+    color:rgb(90, 90, 90);
+    margin-top: 0;
+    padding: 0 0 0 0.5em;
+}
+
+.container > section blockquote {
+    padding-left: 2em;
+    padding-right: 2em;
+    font-style: italic;
+}
+
+.container > section .bd-left {
+    float: left;
+    text-align: left;
+    margin: 0;
+}
+.container > section .bd-right {
+    text-align: right;
+    margin: 0;
+}
+.container > section .bd-reset {
+    float: none;
+}
+
+.summaryPostInfo { 
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid green;
+}
+.summaryPostInfo:last-child  {    
+    padding-bottom: 0.5em;
+    border-bottom: 0;
+}
+.summaryPostInfo p {    
+    margin-top: 0.25em;
+}
+
+.actualPostInfo { 
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid green;
+}
+.actualPostInfo:last-child  {    
+    margin-top: 0.25em;
+    border-bottom: 0;
+}
+.actualPostInfo p {    
+    margin-top: 0.25em;
+}
+.actualPostInfo p:first-child {    
+    margin-top: 1.50em;
+}

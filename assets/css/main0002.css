@@ -227,7 +227,7 @@ a:active {
     border-bottom: 1px solid green;
 }
 .summaryPostInfo:last-child  {    
-    margin-top: 0.25em;
+    padding-bottom: 0.5em;
     border-bottom: 0;
 }
 .summaryPostInfo p {    

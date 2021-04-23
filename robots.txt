@@ -1,2 +1,3 @@
+Sitemap: https://retirednotout.uk/sitemap.xml
 User-agent: *
 Disallow: /

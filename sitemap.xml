@@ -40,28 +40,19 @@
         <loc>https://retirednotout.uk/</loc>
     </url>
     <url>
-        <loc>https://retirednotout.uk/blog/categories/github-pages/</loc>
-    </url>
-    <url>
-        <loc>https://retirednotout.uk/blog/categories/website-generator/</loc>
-    </url>
-    <url>
-        <loc>https://retirednotout.uk/blog/categories/website-coding/</loc>
-    </url>
-    <url>
         <loc>https://retirednotout.uk/blog/categories/websites/</loc>
     </url>
     <url>
         <loc>https://retirednotout.uk/blog/categories/photography/</loc>
     </url>
     <url>
-        <loc>https://retirednotout.uk/blog/tags/cache-control/</loc>
+        <loc>https://retirednotout.uk/blog/categories/website-generator/</loc>
     </url>
     <url>
-        <loc>https://retirednotout.uk/blog/tags/website-generator/</loc>
+        <loc>https://retirednotout.uk/blog/categories/github-pages/</loc>
     </url>
     <url>
-        <loc>https://retirednotout.uk/blog/tags/css/</loc>
+        <loc>https://retirednotout.uk/blog/categories/website-coding/</loc>
     </url>
     <url>
         <loc>https://retirednotout.uk/blog/tags/design/</loc>
@@ -76,6 +67,15 @@
         <loc>https://retirednotout.uk/blog/tags/marsden/</loc>
     </url>
     <url>
+        <loc>https://retirednotout.uk/blog/tags/website-generator/</loc>
+    </url>
+    <url>
         <loc>https://retirednotout.uk/blog/tags/hosting/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/cache-control/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/css/</loc>
     </url>
 </urlset>

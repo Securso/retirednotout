@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/assets-global/css/main0046.css">
+
+    <title>Cache Control for GitHub Pages</title>
+
+
+    <meta name="description" content="This post describes how GitHub Pages applies the cache-control http header."/>
+
+
+    </head>
+
+    <body>
+        <div class="container">
+            
+                        
+<header>
+    <p class="head-title"><a href="/">Retired... Not Out</a></p>
+</header>
+
+            
+<nav>
+    <a class="nav-hdr  " href="/">Home</a>
+    <a class="nav-hdr  " href="/blog/">Blog</a>
+    <a class="nav-hdr  " href="/about">About</a>
+    <a class="nav-hdr  " href="/contact">Contact</a>
+</nav>
+
+
+            <section>
+                <div>
+                    <p class="bd-left">
+                        Paul Chappell
+                    </p>
+                    <p class="bd-right">
+                        Sunday 30 May 2021
+                    </p>
+                </div>
+
+                <div class="bd-reset">
+                    <h1>Cache Control for GitHub Pages</h1>
+<p>This post assumes you have an understanding of caching websites and the Cache-Control Http Header. If not, there is a very good post by Harry Roberts, on his <a href="https://csswizardry.com/">CSSWizadry</a> website, titled <a href="https://csswizardry.com/2019/03/cache-control-for-civilians/#:%7E:text=Cache-Control%20for%20Civilians%201%20Cache-Control.%20One%20of%20the,This%20is%20the%20one%20that%20trips%20most%20">Cache-Control for Civilians</a>. It’s one of the best articles on Cache-Control I have found. His website is full of information on CSS and Website Performance, and well worth a read.</p>
+<p>Yesterday, I was testing the second prototype of my website generator, in particular, the code that uploads website changes to GitHub Pages, so they appear on the live site. I was performing a simple test: I changed the title of my about page from “About Me”, to “About Paul Chappell” and clicked upload. The upload seemed to work, but when I looked at the live site, the about page title had not changed.</p>
+<p>Ooooops, looks like a bug in my code.</p>
+<p>The first thing I checked was the GitHub repository for the website, the change was there, but GitHub seemed to be ignoring it. I reckoned it must be a caching problem, so I cleared the browser cache and viewed the about page again, this time the new title appeared.</p>
+<p>Googling the issue, told me that GitHub Pages publicly cache everything for 10 minutes, and that the caching period cannot be changed.</p>
+<p>So, next test: I cleared the browser cache and displayed the about page, making a note of the time. I then changed the about page title and uploaded the change. I refreshed the about page, the change was not there, as expected. I waited until 10 minutes had passed since the first display and refreshed the page again. This time the new title appeared.</p>
+<p>So, not a problem with my code, but a misunderstanding of how GitHub Pages perform caching.</p>
+<p>When you upload a new version of your website, anyone who is currently viewing the site, might not see your change for ten minutes or so. Which for my website is not a problem, (though see the section titled race conditions, below).</p>
+<p>This is the approach I took with the <a href="http://ulverstonfallen.uk/">Ulverston Fallen</a> website. I reckoned that people who are viewing the site might keep returning to pages they were viewing. So, in order to keep load off the server and network traffic to a minimum, I decided to locally cache all html pages for a short period of time. This just makes the site run faster.</p>
+<h2>So, What’s Going On</h2>
+<p>When you request the about page for the first time (after clearing the browser’s cache), the response contains the following http headers:</p>
+<pre><code>cache-control: max-age=600
+etag: W/”60b341db-2c41”
+</code></pre>
+<p>The <em>cache-control</em> header tells the browser that it can cache the page for 600 seconds. The etag header tells the browser the version of the page that was sent. If the page is refreshed before the 600 seconds is up, it will be re-displayed from the browser’s cache, nothing will be sent to GitHub.</p>
+<p>If the page is refreshed after the 600 seconds is up, the browser re-requests the About page from GitHub, adding the following header to the request:</p>
+<pre><code>if-non-match: W/”60b341db-2c41”
+</code></pre>
+<p>This basically tells GitHub, that the browser needs the About page again, and the version it has cached is W/”60b341db-2c41”. When it receives the request, GitHub checks its version of the page, sees it’s unchanged and responds with an http status code 304 (not modified). The About page does not need to be resent, saving network bandwidth. The browser re-displays its cached version.</p>
+<p>Before the 600 seconds is up again, the About page needs to be changed and uploaded to GitHub pages. After the 600 seconds is up, the About page needs to be refreshed again, this results in a request to GitHub, with the same <em>if-non-match</em> header. This time GitHub sees that the page has changed and responds with an http status code 200 (ok), the new page is sent, along with the following response headers:</p>
+<pre><code>cache-control: max-age=600
+etag: W/”60b358aa-2c4c”
+</code></pre>
+<p>The <em>cache-control</em> header is the same, the page should be cached for 600 seconds. But the <em>etag</em> has changed, signifying a new version of the page. The browser needs to delete the version of the page it has in its cache and add the new version.</p>
+<p>How GitHub pages computes the <em>etag</em> is beyond the scope of this post, all we need to know is that the etag changes every time the page changes, even if the change is a single letter.</p>
+<h2>Race Conditions</h2>
+<p>There is a potential problem with this approach. Assume two posts, <em>Post A</em> and <em>Post B</em>; <em>B</em> links to <em>A</em>, <em>A</em> is older than <em>B</em>, <em>A</em> is uploaded before <em>B</em>, and <em>A</em> never changes. Because of this, there is never a problem with the link from <em>B</em> to <em>A</em>. Caching has no effect on what the reader sees, ever.</p>
+<p>Now, suppose <em>A</em> and <em>B</em> are both changed and uploaded at the same time. Caching can now affect what the reader sees. There is a slight chance that when a reader clicks the link from <em>B</em> to <em>A</em>, a cached or stale version of <em>A</em> is displayed, confusing them.</p>
+<p>This is unlikely to occur, because it can only happen when a reader is reading <em>B</em> and clicks the link to <em>A</em>, while that page is still in the browser’s cache. They need to have requested <em>A</em> in the previous ten minutes. If this happens, they will see a version of <em>A</em> that is inconsistent with <em>B</em>. It’s unlikely to happen because caching is limited to 10 minutes, but it can happen.</p>
+<p>If pages are cached for longer than ten minutes, or there are lots of pages dependent on other pages it may be a problem and is something to think about. For a blog it probably isn’t.</p>
+<h2>Testing</h2>
+<p>I’ve been uploading this website to GitHub Pages for some time now, and until yesterday I had not come across this problem. This is because, I was never viewing the live website just before an upload. Yesterday, for some reason or other, I was.</p>
+<p>The upshot: you really, really must think about testing.</p>
+
+
+                    <div class="actualPostInfo">
+                        <p>Published: Sunday 30 May 2021</p>
+                        
+                        <p>Paul Chappell</p>
+                    </div>
+                </div>
+            </section>
+            
+            
+<footer>
+    <p class="fm-left">
+        Copyright © 2021 Paul Chappell. All Rights Reserved
+    </p>
+    <p class="fm-right">
+        Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
+    </p>
+    <div class="nav-foot">
+        <a class="nav-ftr nav-ftr-hom" href="/">Home</a>
+        <a class="nav-ftr nav-ftr-abt" href="/blog/">Blog</a>
+        <a class="nav-ftr nav-ftr-abt" href="/about">About</a>
+        <a class="nav-ftr nav-ftr-cnt" href="/contact">Contact</a>
+        <a class="nav-ftr nav-ftr-inf" href="/info">Info</a>
+    </div>
+</footer>
+
+
+        </div>
+    </body>
+</html>

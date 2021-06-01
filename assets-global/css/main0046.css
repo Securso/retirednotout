@@ -53,6 +53,7 @@ h3 {
 p {
     font-size: 1.0rem;
 }
+
 li {
     font-size: 1.0rem;
 }
@@ -115,7 +116,7 @@ a:active {
 
 .container > nav .nav-hdr {
     flex: 0 0 auto;  
-    font-size: 1.1em;
+    font-size: 1.1rem;
     margin-top: 0;
     padding: 0.25em 0.25em;
     line-height: 1;
@@ -219,6 +220,13 @@ a:active {
     border: 1px solid rgb(100, 100, 100);
 }
 
+.container > section pre {
+    background-color: rgb(235, 235, 235);
+    padding: 0.5em 2em 0.5em 2em;
+    font-size: 0.9rem;
+    color: darkblue;
+}
+
 .container > section .bd-left {
     float: left;
     text-align: left;
@@ -258,4 +266,8 @@ a:active {
 }
 .actualPostInfo p:first-child {    
     margin-top: 1.50em;
+}
+
+.green {
+    color: green;
 }

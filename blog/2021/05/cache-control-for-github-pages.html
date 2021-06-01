@@ -56,17 +56,17 @@
 <pre><code>cache-control: max-age=600
 etag: W/”60b341db-2c41”
 </code></pre>
-<p>The <em>cache-control</em> header tells the browser that it can cache the page for 600 seconds. The etag header tells the browser the version of the page that was sent. If the page is refreshed before the 600 seconds is up, it will be re-displayed from the browser’s cache, nothing will be sent to GitHub.</p>
-<p>If the page is refreshed after the 600 seconds is up, the browser re-requests the About page from GitHub, adding the following header to the request:</p>
+<p>The <span class="darkgreen"><em>cache-control</em></span> header tells the browser that it can cache the page for 600 seconds. The <span class="darkgreen"><em>etag</em></span> header tells the browser the version of the page that was sent. If the page is refreshed before the 600 seconds is up, it will be re-displayed from the browser’s cache, nothing will be requested from GitHub.</p>
+<p>If the page is refreshed after the 600 seconds is up, the browser re-requests the About page from GitHub, adding the following http header to the request:</p>
 <pre><code>if-non-match: W/”60b341db-2c41”
 </code></pre>
-<p>This basically tells GitHub, that the browser needs the About page again, and the version it has cached is W/”60b341db-2c41”. When it receives the request, GitHub checks its version of the page, sees it’s unchanged and responds with an http status code 304 (not modified). The About page does not need to be resent, saving network bandwidth. The browser re-displays its cached version.</p>
-<p>Before the 600 seconds is up again, the About page needs to be changed and uploaded to GitHub pages. After the 600 seconds is up, the About page needs to be refreshed again, this results in a request to GitHub, with the same <em>if-non-match</em> header. This time GitHub sees that the page has changed and responds with an http status code 200 (ok), the new page is sent, along with the following response headers:</p>
+<p>The <span class="darkgreen"><em>if-non-match</em></span> header tells GitHub, that the browser needs the About page again, and the version it has cached is ”60b341db-2c41”. When it receives the request, GitHub checks its version of the page, sees it’s unchanged and responds with an http status code 304 (not modified). The About page does not need to be resent, saving network bandwidth. The browser re-displays its cached version.</p>
+<p>Before the 600 seconds is up again, the About page needs to be changed and uploaded to GitHub pages. After the 600 seconds is up, the About page needs to be refreshed again, this results in a request to GitHub, with the same <span class="darkgreen"><em>if-non-match</em> </span>header. This time GitHub sees that the page has changed and responds with an http status code 200 (ok), the new page is sent, along with the following response headers:</p>
 <pre><code>cache-control: max-age=600
 etag: W/”60b358aa-2c4c”
 </code></pre>
-<p>The <em>cache-control</em> header is the same, the page should be cached for 600 seconds. But the <em>etag</em> has changed, signifying a new version of the page. The browser needs to delete the version of the page it has in its cache and add the new version.</p>
-<p>How GitHub pages computes the <em>etag</em> is beyond the scope of this post, all we need to know is that the etag changes every time the page changes, even if the change is a single letter.</p>
+<p>The <span class="darkgreen"><em>cache-control</em></span> header is the same, the page should be cached for 600 seconds. But the <span class="darkgreen"><em>etag</em></span> has changed, signifying a new version of the page. The browser needs to delete the version of the page it has in its cache and add the new version.</p>
+<p>How GitHub pages computes the <span class="darkgreen"><em>etag</em></span> is beyond the scope of this post, all we need to know is that the etag changes every time the page changes, even if the change is a single letter.</p>
 <h2>Race Conditions</h2>
 <p>There is a potential problem with this approach. Assume two posts, <em>Post A</em> and <em>Post B</em>; <em>B</em> links to <em>A</em>, <em>A</em> is older than <em>B</em>, <em>A</em> is uploaded before <em>B</em>, and <em>A</em> never changes. Because of this, there is never a problem with the link from <em>B</em> to <em>A</em>. Caching has no effect on what the reader sees, ever.</p>
 <p>Now, suppose <em>A</em> and <em>B</em> are both changed and uploaded at the same time. Caching can now affect what the reader sees. There is a slight chance that when a reader clicks the link from <em>B</em> to <em>A</em>, a cached or stale version of <em>A</em> is displayed, confusing them.</p>

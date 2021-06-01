@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://retirednotout.uk/</loc>
-    </url>
-    <url>
         <loc>https://retirednotout.uk/about</loc>
-    </url>
-    <url>
-        <loc>https://retirednotout.uk/blog/</loc>
-    </url>
-    <url>
-        <loc>https://retirednotout.uk/contact</loc>
-    </url>
-    <url>
-        <loc>https://retirednotout.uk/info</loc>
     </url>
     <url>
         <loc>https://retirednotout.uk/blog/2021/04/a-personal-view-of-blog-design</loc>
@@ -32,5 +20,62 @@
     </url>
     <url>
         <loc>https://retirednotout.uk/blog/2021/05/photographs-of-the-canal-around-marsden</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/categories/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/contact</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/info</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/categories/website-generator/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/categories/github-pages/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/categories/website-coding/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/categories/websites/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/categories/photography/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/website-generator/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/cache-control/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/css/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/design/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/personal-view/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/blog/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/hosting/</loc>
+    </url>
+    <url>
+        <loc>https://retirednotout.uk/blog/tags/marsden/</loc>
     </url>
 </urlset>

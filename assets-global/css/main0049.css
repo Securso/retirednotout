@@ -1,21 +1,20 @@
 :root {
-    font-size: 0.8em;
+    font-size: 0.8rem;
     box-sizing: border-box;
 }
-
 @media (min-width: 576px) {
     :root {
-        font-size: 0.9em;
+        font-size: 0.9rem;
     }
 }
 @media (min-width: 768px) {
     :root {
-        font-size: 1.0em;
+        font-size: 1.0rem;
     }
 }
 @media (min-width: 992px) {
     :root {
-        font-size: 1.1em;
+        font-size: 1.1rem;
     }
 }
 
@@ -171,18 +170,22 @@ a:active {
     margin-bottom: 1.5em;
 }
 
-.container > footer .nav-ftr {
+@media (max-width: 576px) {
+    .container > footer > .nav-foot {
+        margin: 0.25em 0 1.5em 0;
+    }
+
+}
+
+.container > footer > .nav-foot > .nav-foot-item {
     flex: 0 0 auto; 
     font-size: 1rem;
     margin-top: 0;
     padding: 0 0.25em;
 }
 
-@media (max-width: 576px) {
-    .container > footer .nav-foot {
-        margin: 0.25em 0 1.5em 0;
-    }
-
+.container > footer > .nav-foot > .nav-foot-curr {
+    font-weight: bold;
 }
 
 /* ----------------------------------- */
@@ -242,7 +245,8 @@ a:active {
 }
 
 .summaryPostInfo { 
-    padding-bottom: 0.5em;
+    margin-top: 1em;
+    padding-bottom: 0.75em;
     border-bottom: 1px solid rgb(38, 38, 154);
 }
 .summaryPostInfo:last-child  {    
@@ -250,7 +254,25 @@ a:active {
     border-bottom: 0;
 }
 .summaryPostInfo p {    
-    margin-top: 0.25em;
+    margin-top: 0.5em;
+    line-height: 120%;
+    font-size: 0.9rem;
+    margin-bottom: 0.5em;
+}
+@media (min-width: 576px) {
+    .summaryPostInfo > p {
+        font-size: 0.9rem;
+    }
+}
+@media (min-width: 768px) {
+    .summaryPostInfo > p  {
+        font-size: 0.9rem;
+    }
+}
+@media (min-width: 992px) {
+    .summaryPostInfo > p {
+        font-size: 0.9rem;
+    }
 }
 
 .actualPostInfo { 
@@ -270,4 +292,23 @@ a:active {
 
 .darkgreen {
     color: darkgreen;
+}
+
+.taxonomyValues {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+.taxonomyValue {
+    margin: 0.5em 0.25em 0.5em 0.25em;
+    border: 1px solid rgb(38, 38, 154);
+    border-radius: 0.75em;
+    padding: 0.5em 1.0em 0.5em 1.0em;
+    line-height: 100%;
+}
+
+.taxonomyBody {
+    text-align: center;
 }
